@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="vendor/boostrap-2.3.2/css/bootstrap.min.css"/>
+    <style type="text/css">
+        .hover:hover {
+            background-color: #EEE;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        .hover:hover .hidden {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="menu"></div>
+<script type="text/javascript" src="vendor/draggabilly.pkgd.min.js"></script>
+<script type="text/javascript" src="vendor/Ractive.js"></script>
+<script type="text/javascript" src="src/menubuilder.js">
+</script>
+<div class="container">
+    <div class="row">
+        <h1>SilexPress menu builder</h1>
+
+        <p>This is a prototype of the future silexpress menu builder</p>
+        <noscript>
+            <h2 class="warning"> This page needs javascript , please enable javascript in your browser </h2>
+        </noscript>
+    </div>
+    <div class="row">
+        <div id="menuBuilder"></div>
+    </div>
+    <div class="row">
+        <form action="">
+            <textarea class="input-block-level" name="" id="result" rows="10"></textarea></form>
+    </div>
+    <!-- MENU BUILDER TEMPLATE -->
+    <script type="text/template" id="menuBuilderTemplate">
+        <div class="span3 well well-small">
+            <div class="page">
+                <h4>Pages</h4>
+                {{#pages:i}}
+                <label><input
+                        type="checkbox" name="{{selectedPages}}" value="{{id}}"/> {{title}}
+                </label>
+                {{/pages}}
+                <a href="javascript:;" class="btn btn-mini  menu-add-page" proxy-click="selectAllPages">Select
+                    All</a>
+                <a href="javascript:;" class="btn btn-mini  menu-add-page" proxy-click="addPageToMenu">Add to
+                    Menu</a>
+            </div>
+            <hr class="divider">
+            <!--LINKS-->
+            <div class="link">
+                <h4>Links</h4>
+                <ul class="unstyled">
+                    {{#linkForm}}
+                    <li><label>URL<input type="text" name="link[url]" value="{{url}}"/></label></li>
+                    <li><label>Text<input type="text" name="link[text]" value="{{title}}"/></label></li>
+                    {{/linkForm}}
+                </ul>
+                <a href="javascript:;" class="btn btn-mini  menu-add-link" proxy-click="addLinkToMenu">Add to
+                    Menu</a>
+            </div>
+            <hr>
+            <!--CATEGORIES-->
+            <div class="categories">
+                <h4>Categories</h4>
+                {{#categories:i}}
+                <label><input type="checkbox" name="{{selectedCategories}}" value="{{id}}"/> {{title}}</label>
+                {{/categories}}
+                <a href="javascript:;" class="btn btn-mini  menu-add-page" proxy-click="selectAllCategories">Select
+                    All</a>
+                <a href="javascript:;" class="btn btn-mini menu-addcategory" proxy-click="addCategoryToMenu">Add
+                    to Menu</a>
+            </div>
+        </div>
+        <!--MENU-->
+        <div class="span8 well">
+            <h4>Menu</h4>
+            {{#menu}}
+            <form class="form" action="">
+                <label>Menu Structure</label>
+                <div class="structure">
+                    <ol>
+                        {{#items:i}}
+                        <li class="hover" intro='fade' outro="fade">
+                            <div>{{title}} <span class="muted">{{menu_type}}</span></div>
+                            <div class="hidden">
+                                {{#i>0}}
+                                <a proxy-click="up:{{i}}" href="javascript:;">Up</a> |
+                                {{/i}}
+                                {{#i < items.length-1}}
+                                <a href="javascript:;" proxy-click="down:{{i}}">Down</a> |
+                                {{/i}}
+                                <a proxy-click="remove:{{i}}" href="javascript:;">Remove</a>
+                            </div>
+                        </li>
+                        {{/items}}
+                    </ol>
+                </div>
+                <input type="submit" value="Save Menu" class="btn"/>
+            </form>
+            {{/menu}}
+        </div>
+    </script>
+</div>
+<script type="text/javascript">
+    window.addEventListener("load", function (e) {
+        "use strict";
+        var menuBuilder, menuBuilderObserver, results;
+        results = document.querySelector("#result");
+        menuBuilder = new MenuBuilder({el: "#menuBuilder",
+            template: "#menuBuilderTemplate",
+            data: {
+                menu: {
+                    name: null,
+                    items: []
+                },
+                linkForm: {title: null, url: null},
+                pages: [
+                    {title: "Page 1", id: 0},
+                    {title: "Page 2", id: 1},
+                    {title: "Page 3", id: 2}
+                ],
+                categories: [
+                    {title: "Category 1", id: 0},
+                    {title: "Category 2", id: 1},
+                    {title: "Category 3", id: 2}
+                ],
+                menus: [],
+                selectedCategories: [],
+                selectedPages: []
+            }});
+        menuBuilderObserver = menuBuilder.observe("menu.items", function (oldValue, newValue) {
+            $result.innerText = JSON.stringify(newValue, null, "\t");
+        });
+    });
+</script>
+</body>
+</html>
