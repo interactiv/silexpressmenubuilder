@@ -39,7 +39,7 @@
                         return (item.id in self.get("selectedPages"));
                     });
                     pages.forEach(function (page) {
-                        self.get("menu.items").push({post_id: page.id, title: page.title, menu_type: "page"});
+                        self.get("menu.items").push({post_id: page.id, label: page.title, title: page.title, menu_type: "page"});
                     });
                     this.set("selectedPages", []);
                 },
@@ -48,7 +48,7 @@
                     var link = this.get("linkForm");
                     if (!link.url)return;
                     if (!link.title)link.title = link.url;
-                    this.get("menu.items").push({post_id: null, url: link.url, title: link.title, menu_type: "link"});
+                    this.get("menu.items").push({post_id: null, url: link.url, label: link.title, title: link.title, menu_type: "link"});
                     this.set("linkForm", {});//empty link form
                 },
                 /** add category to menu **/
@@ -59,7 +59,7 @@
                     items = this.get("menu.items");
                     for (i = 0; i < selectedCategories.length; i++) {
                         category = this.getCategoryById(selectedCategories[i]);
-                        items.push({post_id: category.id, title: category.title, menu_type: "category"});
+                        items.push({post_id: category.id, label: category.title, title: category.title, menu_type: "category"});
                     }
                     selectedCategories.splice(0, selectedCategories.length);
                     this.update("selectedCategories");
