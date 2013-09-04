@@ -36,7 +36,7 @@
                 addPageToMenu: function () {
                     var self = this;
                     var pages = this.get("pages").filter(function (item) {
-                        return (item.id in self.get("selectedPages"));
+                        return  self.get("selectedPages").indexOf(item.id) >= 0;
                     });
                     pages.forEach(function (page) {
                         self.get("menu.items").push({post_id: page.id, label: page.title, title: page.title, menu_type: "page"});
@@ -53,17 +53,16 @@
                 },
                 /** add category to menu **/
                 addCategoryToMenu: function () {
-                    var i, category, categories, selectedCategories, items;
+                    var i, category, categories, selectedCategories, items, self;
+                    self = this;
                     categories = this.get("categories");
                     selectedCategories = this.get("selectedCategories");
                     items = this.get("menu.items");
                     for (i = 0; i < selectedCategories.length; i++) {
                         category = this.getCategoryById(selectedCategories[i]);
-                        items.push({post_id: category.id, label: category.title, title: category.title, menu_type: "category"});
+                        this.get("menu.items").push({post_id: category.id, label: category.title, title: category.title, menu_type: "category"});
                     }
-                    selectedCategories.splice(0, selectedCategories.length);
-                    this.update("selectedCategories");
-                    this.update("menu.items");
+                    this.set("selectedCategories", []);
                 },
                 /** move item up in the list **/
                 up: function (event) {

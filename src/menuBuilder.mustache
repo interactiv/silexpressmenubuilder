@@ -1,4 +1,31 @@
-<div class="span3 well well-small">
+<!-- MENU BUILDER TEMPLATE -->
+<style type="text/css">
+    .hover:hover {
+        background-color: #EEE;
+    }
+
+    .mb-hidden {
+        opacity: 0;
+    }
+
+    .hover:hover .mb-hidden {
+        opacity: 1;
+    }
+</style>
+<div class="span3" intro="fade:fast">
+    <!--CATEGORIES-->
+    <div class="categories">
+        <h4>Categories</h4>
+        {{#categories}}
+            <label><input type="checkbox" name="{{selectedCategories}}" value="{{id}}"/> {{title}}</label>
+        {{/categories}}
+        <a href="javascript:;" class="btn btn-mini  menu-add-page" proxy-click="selectAllCategories">Select
+            All</a>
+        <a href="javascript:;" class="btn btn-mini menu-addcategory" proxy-click="addCategoryToMenu">Add
+            to Menu</a>
+    </div>
+    <hr>
+    <!-- PAGES -->
     <div class="page">
         <h4>Pages</h4>
         {{#pages}}
@@ -25,46 +52,36 @@
             Menu</a>
     </div>
     <hr>
-    <!--CATEGORIES-->
-    <div class="categories">
-        <h4>Categories</h4>
-        {{#categories}}
-            <label><input type="checkbox" name="{{selectedCategories}}" value="{{id}}"/> {{title}}</label>
-        {{/categories}}
-        <a href="javascript:;" class="btn btn-mini  menu-add-page" proxy-click="selectAllCategories">Select
-            All</a>
-        <a href="javascript:;" class="btn btn-mini menu-addcategory" proxy-click="addCategoryToMenu">Add
-            to Menu</a>
-    </div>
+
 </div>
 <!--MENU-->
-<div class="span8 well">
+<div class="span6">
     <h4>Menu</h4>
-    {{#menu}}
+{{#menu}}
     <form class="form" action="">
         <label>Menu Structure</label>
 
-            <div class="structure">
-                <ol>
-                    {{#items:i}}
-                    <li class="hover" intro='fade' outro="fade">
-                        <div>
-                            {{title}} <span class="muted">{{menu_type}}</span>
-                        <label>Label: <input type="text" class="input-medium" value="{{label}}" />
-                        </label></div>
-                        <div class="hidden">
-                            {{#i > 0}}
-                            <a proxy-click="up" href="javascript:;">Up</a> |
-                            {{/i}}
-                            {{#i < items.length-1 }}
-                            <a href="javascript:;" proxy-click="down:{{i}}">Down</a> |
-                            {{/i}}
-                            <a proxy-click="remove:{{i}}" href="javascript:;">Remove</a>
-                        </div>
-                    </li>
-                    {{/items}}
-                </ol>
-            </div>
-        </form>
-    {{/menu}}
+    <div class="structure">
+    <ol>
+    {{#items:i}}
+    <li class="hover" intro='fade' outro="fade">
+        <div>
+            {{title}} <span class="muted">{{menu_type}}</span>
+            <label>Label: <input type="text" class="input-medium" value="{{label}}"/>
+            </label></div>
+        <div class="mb-hidden">
+            {{# i > 0 }}
+                <a proxy-click="up" href="javascript:;">Up</a> |
+            {{/i}}
+            {{# i < items.length-1 }}
+                <a href="javascript:;" proxy-click="down:{{i}}">Down</a> |
+            {{/i}}
+            <a proxy-click="remove:{{i}}" href="javascript:;">Remove</a>
+        </div>
+    </li>
+{{/items}}
+</ol>
+</div>
+</form>
+{{/menu}}
 </div>
